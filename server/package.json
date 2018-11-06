@@ -1,0 +1,43 @@
+{
+  "name": "energy-demo-web-server",
+  "version": "0.0.1",
+  "description": "energy demo web server",
+  "main": "src/bin/start.ts",
+  "scripts": {
+    "start": "ts-node src/bin/start.ts",
+    "start:watch": "nodemon",
+    "lint": "tslint --force --format verbose \"src/**/*.ts\" \"test/*\"",
+    "build": "tsc --pretty"
+  },
+  "author": "Chi-Hsuan Huang",
+  "dependencies": {
+    "@koa/cors": "^2.2.2",
+    "apollo-server-koa": "^2.1.0",
+    "global": "^4.3.2",
+    "graphql": "^14.0.2",
+    "http": "^0.0.0",
+    "koa": "^2.6.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "mongodb": "^3.1.8",
+    "reflect-metadata": "^0.1.12",
+    "socket.io": "^2.1.1",
+    "typeorm": "^0.2.8",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.0.3",
+    "@types/koa": "^2.0.46",
+    "@types/koa-bodyparser": "^5.0.1",
+    "@types/koa-router": "^7.0.33",
+    "@types/koa__cors": "^2.2.3",
+    "@types/node": "^10.12.2",
+    "@types/socket.io": "^2.1.0",
+    "@types/uuid": "^3.4.4",
+    "nodemon": "^1.18.6",
+    "rimraf": "^2.6.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
+  }
+}
