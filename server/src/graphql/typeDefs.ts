@@ -1,18 +1,25 @@
-import Egauge from './types/egauge';
 import { gql } from 'apollo-server-koa';
+import Egauge from './types/egauge';
+import House from './types/house';
 
 const typeDefs = gql`
   type Query {
-    Egauges(
+    getEgauges(
       dataid: String
     ): [Egauge]
+
+    Houses: [House]
   }
 
   type Mutation {
-    createEgauge(
-      egauge: NewEgauge!
-    ): Egauge
+    createEgauges(
+      egauges: [NewEgauge]!
+    ): [Egauge]
+
+    createHouse(
+      house: NewHouse!
+    ): House
   }
 `;
 
-export default [typeDefs, Egauge];
+export default [typeDefs, Egauge, House];

@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Egauge {
+export default class Egauge {
   @ObjectIdColumn()
   public id: string;
 
