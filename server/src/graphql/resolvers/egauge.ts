@@ -24,10 +24,10 @@ export const egaugeResolver = {
   Mutation: {
     async createEgauges(_: any, args: IArgs, { io }: { io: socketIO.Socket }) {
       const repository = getMongoRepository(Egauge);
-      const egauges = await repository
+      const rep = await repository
         .insertMany(args.egauges);
-      io.emit('egaugeAdded', egauges);
-      return egauges;
+      io.emit('egaugeAdded', rep.ops);
+      return rep.ops;
     },
   },
 };
