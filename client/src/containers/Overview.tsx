@@ -19,9 +19,9 @@ const Option = Select.Option;
 
 interface IEgauge {
   dataid: string;
-  use: number;
-  gen: number;
-  grid: number;
+  powerUsage: number;
+  waterUsage: number;
+  gasUsage: number;
 }
 
 
@@ -29,9 +29,9 @@ interface IProps {
   socket: SocketIOClient.Socket;
   egauges: IEgauge[];
   gaugeData: {
-    use: number;
-    gen: number;
-    grid: number;
+    powerUsage: number;
+    waterUsage: number;
+    gasUsage: number;
   };
   loading: boolean;
   refetch: (variables?: { dataid: string }) => Promise<any>;
@@ -111,24 +111,24 @@ class Overview extends React.Component<IProps> {
         <Row gutter={16}>
           <Col md={8} xs={24}>
             <Card title="Energy Usuage">
-              <Gauge value={sumGaugeData.use} unit="kWh" />
+              <Gauge value={sumGaugeData.powerUsage} unit="kWh" />
             </Card>
           </Col>
           <Col md={8} xs={24}>
             <Card title="Water Usuage">
-              <Gauge value={sumGaugeData.gen} unit="m3" />
+              <Gauge value={sumGaugeData.waterUsage} unit="m3" />
             </Card>
           </Col>
           <Col md={8} xs={24}>
             <Card title="Gas Usuage">
-              <Gauge value={sumGaugeData.grid} unit="m3" />
+              <Gauge value={sumGaugeData.gasUsage} unit="m3" />
             </Card>
           </Col>
         </Row>
         <Row>
           <LineChart
             data={allEgauges}
-            yFields={['use', 'gen', 'grid']}
+            yFields={['powerUsage', 'waterUsage', 'gasUsage']}
             xField="createdAt"
           />
         </Row>
@@ -149,11 +149,14 @@ const styles = {
 };
 
 const query = gql`
-query getEgauges($dataid: String!){
-  egauges: getEgauges(dataid: $dataid) {
-    use,
-    gen,
-    grid,
+query getEgauges($dataid: String! $filter: Filter){
+  egauges: getEgauges(
+    dataid: $dataid
+    filter: $filter
+  ) {
+    powerUsage,
+    waterUsage,
+    gasUsage,
     createdAt
   }
 }
@@ -168,7 +171,11 @@ export default graphql(query, {
   }),
   options: (props) => ({
     variables: {
-      dataid: '0' 
+      dataid: '0',
+      filter: {
+        // FIX: use today
+        createdAt_gte: '2015/1/30',
+      }
     },
   }),
 })(Overview);
