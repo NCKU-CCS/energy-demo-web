@@ -3,13 +3,19 @@ import Egauge from './types/egauge';
 import House from './types/house';
 
 const typeDefs = gql`
+  input Filter {
+    createdAt_gte: String!
+  }
+
   type Query {
     getEgauges(
       dataid: String!
       filter: Filter
     ): [Egauge]
 
-    Houses: [House]
+    Houses(
+      filter: Filter
+    ): [House]
   }
 
   type Mutation {

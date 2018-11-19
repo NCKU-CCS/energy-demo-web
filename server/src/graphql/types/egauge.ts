@@ -10,10 +10,6 @@ const Egauge = gql`
     createdAt: String!
   }
 
-  input Filter {
-    createdAt_gte: String!
-  }
-
   input NewEgauge {
     dataid: String!
     powerUsage: Float!

@@ -50,9 +50,9 @@ export const createApp = async (): Promise<http.Server> => {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({
+    context: ({ ctx }: any) => ({
       io,
-      egaugeDataLoader: createEgaugeDataLoader(),
+      egaugeDataLoader: createEgaugeDataLoader(ctx.request.body.variables),
     }),
   });
   apolloServer.applyMiddleware({ app });

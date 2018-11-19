@@ -2,11 +2,16 @@ import * as DataLoader from 'dataloader';
 import { getMongoRepository } from 'typeorm';
 import Egauge from './entities/egauge';
 
-const getEgaugesBydataIds = async (dataIds: string[]) => {
+interface IFilter {
+  createdAt_gte: string;
+}
+
+const getEgaugesBydataIds = async (dataIds: string[], filter: IFilter) => {
   const repository = getMongoRepository(Egauge);
   const egauge = await repository
     .aggregate([
       { $match: { dataid: { $in: dataIds } } },
+      { $match: { createdAt: { $gte: filter.createdAt_gte  } }},
     ])
     .group({
       _id: '$dataid',
@@ -18,8 +23,8 @@ const getEgaugesBydataIds = async (dataIds: string[]) => {
   return egauge;
 };
 
-export const createEgaugeDataLoader = () => (
+export const createEgaugeDataLoader = ({ filter }: any) => (
   new DataLoader<string, Egauge>(
-    (ids: string[]) => (getEgaugesBydataIds(ids)),
+    (ids: string[]) => (getEgaugesBydataIds(ids, filter)),
   )
 );
