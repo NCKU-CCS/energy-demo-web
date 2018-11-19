@@ -50,8 +50,8 @@ const OverviewLineChart = ({
       <Legend
         itemFormatter={(item) => {
           const d = {
-            use: 'Usuage',
-            gen: 'Generation',
+            powerUsage: 'Usuage',
+            waterUsage: 'Generation',
             grid: 'Grid'
           }
           return d[item];
