@@ -1,18 +1,18 @@
 interface IEgauge {
-  gen: number;
-  use: number;
-  grid: number;
+  waterUsage: number;
+  powerUsage: number;
+  gasUsage: number;
 }
 
 const sumGaugeData = (data: IEgauge[]) => {
   return data.reduce((accum, value) => ({
-    gen: accum.gen + value.gen,
-    use: accum.use + value.use,
-    grid: accum.grid + value.grid,
+    waterUsage: accum.waterUsage + value.waterUsage,
+    powerUsage: accum.powerUsage + value.powerUsage,
+    gasUsage: accum.gasUsage + value.gasUsage,
   }), {
-    gen: 0,
-    use: 0,
-    grid: 0,
+    waterUsage: 0,
+    powerUsage: 0,
+    gasUsage: 0,
   });
 };
 
