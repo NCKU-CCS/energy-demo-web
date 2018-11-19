@@ -7,6 +7,7 @@ const House = gql`
     lat: Float!
     lng: Float!
     egauges: [Egauge]
+    reducedEgauge: Egauge
   }
 
   input NewHouse {

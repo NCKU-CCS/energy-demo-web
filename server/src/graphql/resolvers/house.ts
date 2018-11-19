@@ -1,7 +1,8 @@
 import * as uuid from 'uuid';
 import { getMongoRepository } from 'typeorm';
-import House from '../../entities/house';
+import * as DataLoader from 'dataloader';
 import Egauge from '../../entities/egauge';
+import House from '../../entities/house';
 interface IArgs {
   house: {
     dataid: string;
@@ -30,33 +31,15 @@ export const houseResolver = {
   },
   Others: {
     House: {
-      async egauges(parent: any) {
-        const { dataid } = parent;
-        const repository = getMongoRepository(Egauge);
-        const reducerEgauge = await repository
-          .aggregate([])
-          .match({ dataid })
-          .group({
-            _id: null,
-            powerUsage: { $sum: '$powerUsage' },
-            waterUsage: { $sum: '$waterUsage' },
-            gasUsage: { $sum: '$gasUsage' },
-          })
-          .toArray();
-
-        if (reducerEgauge.length > 0) {
-          reducerEgauge[0].dataid = dataid;
+      async reducedEgauge(parent: any, args: IArgs, { egaugeDataLoader }: {
+        egaugeDataLoader: DataLoader<string, Egauge>,
+      }) {
+        const reducerEgauge = await egaugeDataLoader.load(parent.dataid);
+        if (reducerEgauge) {
+          reducerEgauge.dataid = parent.dataid;
           return reducerEgauge;
         }
-
-        return [];
-
-        /* tslint:disable */
-        // console.log(dataid, sum);
-
-        return repository.find({
-          dataid,
-        });
+        return {};
       },
     },
   },

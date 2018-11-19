@@ -11,6 +11,7 @@ import { routers } from './routers';
 
 import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
+import { createEgaugeDataLoader } from './dataloader';
 
 export const createApp = async (): Promise<http.Server> => {
   const config = createConfig();
@@ -51,6 +52,7 @@ export const createApp = async (): Promise<http.Server> => {
     resolvers,
     context: () => ({
       io,
+      egaugeDataLoader: createEgaugeDataLoader(),
     }),
   });
   apolloServer.applyMiddleware({ app });

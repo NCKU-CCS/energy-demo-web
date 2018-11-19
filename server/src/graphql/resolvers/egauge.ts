@@ -21,7 +21,6 @@ export const egaugeResolver = {
   Query: {
     async getEgauges(_: any, args: IArgs) {
       const aggregateOptions = [];
-
       aggregateOptions.push({
         $match: { dataid: args.dataid },
       });
