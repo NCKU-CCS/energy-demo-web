@@ -11,14 +11,32 @@ interface IEgauge {
 
 interface IArgs {
   egauges: IEgauge[];
+  dataid: string;
+  filter?: {
+    createdAt_gte: string;
+  };
 }
 
 export const egaugeResolver = {
   Query: {
     async getEgauges(_: any, args: IArgs) {
-      const options = args || {};
-      const repository = getMongoRepository(Egauge);
-      return repository.find(options);
+      const aggregateOptions = [];
+
+      aggregateOptions.push({
+        $match: { dataid: args.dataid },
+      });
+
+      if (args.filter) {
+        aggregateOptions.push({
+          $match: { createdAt: { $gte: args.filter.createdAt_gte  } },
+        });
+      }
+
+      const egauges = await getMongoRepository(Egauge)
+        .aggregate(aggregateOptions)
+        .toArray();
+
+      return egauges;
     },
   },
   Mutation: {

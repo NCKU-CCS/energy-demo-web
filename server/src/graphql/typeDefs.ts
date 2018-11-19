@@ -5,7 +5,8 @@ import House from './types/house';
 const typeDefs = gql`
   type Query {
     getEgauges(
-      dataid: String
+      dataid: String!
+      filter: Filter
     ): [Egauge]
 
     Houses: [House]
