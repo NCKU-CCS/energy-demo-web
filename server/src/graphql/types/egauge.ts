@@ -4,17 +4,17 @@ const Egauge = gql`
   type Egauge {
     id: ID
     dataid: String!
-    use: Float!
-    gen: Float!
-    grid: Float!
+    powerUsage: Float!
+    waterUsage: Float!
+    gasUsage: Float!
     createdAt: String!
   }
 
   input NewEgauge {
     dataid: String!
-    use: Float!
-    gen: Float!
-    grid: Float!
+    powerUsage: Float!
+    waterUsage: Float!
+    gasUsage: Float!
     createdAt: String!
   }
 `;

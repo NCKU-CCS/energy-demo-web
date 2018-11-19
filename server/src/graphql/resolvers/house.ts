@@ -38,9 +38,9 @@ export const houseResolver = {
           .match({ dataid })
           .group({
             _id: null,
-            use: { $sum: '$use' },
-            gen: { $sum: '$gen' },
-            grid: { $sum: '$grid' },
+            powerUsage: { $sum: '$powerUsage' },
+            waterUsage: { $sum: '$waterUsage' },
+            gasUsage: { $sum: '$gasUsage' },
           })
           .toArray();
 

@@ -18,11 +18,11 @@ export default class Egauge {
   public dataid: string;
 
   @Column('double')
-  public use: number;
+  public powerUsage: number;
 
   @Column('double')
-  public gen: number;
+  public waterUsage: number;
 
   @Column('double')
-  public grid: number;
+  public gasUsage: number;
 }
