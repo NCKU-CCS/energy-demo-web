@@ -1,14 +1,14 @@
 import * as DataLoader from 'dataloader';
 import { getMongoRepository } from 'typeorm';
-import Egauge from './entities/egauge';
+import HouseState from './entities/houseState';
 
 interface IFilter {
   createdAt_gte: string;
 }
 
-const getEgaugesBydataIds = async (dataIds: string[], filter: IFilter) => {
-  const repository = getMongoRepository(Egauge);
-  const egauge = await repository
+const getHouseStateBydataIds = async (dataIds: string[], filter: IFilter) => {
+  const repository = getMongoRepository(HouseState);
+  const houseState = await repository
     .aggregate([
       { $match: { dataid: { $in: dataIds } } },
       { $match: { createdAt: { $gte: filter.createdAt_gte  } }},
@@ -20,11 +20,11 @@ const getEgaugesBydataIds = async (dataIds: string[], filter: IFilter) => {
       gasUsage: { $sum: '$gasUsage' },
     })
     .toArray();
-  return egauge;
+  return houseState;
 };
 
-export const createEgaugeDataLoader = ({ filter }: any) => (
-  new DataLoader<string, Egauge>(
-    (ids: string[]) => (getEgaugesBydataIds(ids, filter)),
+export const createHouseStateDataLoader = ({ filter }: any) => (
+  new DataLoader<string, HouseState>(
+    (ids: string[]) => (getHouseStateBydataIds(ids, filter)),
   )
 );

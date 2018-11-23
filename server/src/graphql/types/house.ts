@@ -6,8 +6,8 @@ const House = gql`
     dataid: String!
     lat: Float!
     lng: Float!
-    egauges: [Egauge]
-    reducedEgauge: Egauge
+    houseState: [HouseState]
+    reducedHouseState: HouseState
   }
 
   input NewHouse {

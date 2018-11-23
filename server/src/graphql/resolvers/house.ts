@@ -1,7 +1,7 @@
 import * as uuid from 'uuid';
 import { getMongoRepository } from 'typeorm';
 import * as DataLoader from 'dataloader';
-import Egauge from '../../entities/egauge';
+import HouseState from '../../entities/houseState';
 import House from '../../entities/house';
 interface IArgs {
   house: {
@@ -31,13 +31,13 @@ export const houseResolver = {
   },
   Others: {
     House: {
-      async reducedEgauge(parent: any, args: IArgs, { egaugeDataLoader }: {
-        egaugeDataLoader: DataLoader<string, Egauge>,
+      async reducedHouseState(parent: any, args: IArgs, { houseStateDataLoader }: {
+        houseStateDataLoader: DataLoader<string, HouseState>,
       }) {
-        const reducerEgauge = await egaugeDataLoader.load(parent.dataid);
-        if (reducerEgauge) {
-          reducerEgauge.dataid = parent.dataid;
-          return reducerEgauge;
+        const reducerHouseState = await houseStateDataLoader.load(parent.dataid);
+        if (reducerHouseState) {
+          reducerHouseState.dataid = parent.dataid;
+          return reducerHouseState;
         }
         return {};
       },

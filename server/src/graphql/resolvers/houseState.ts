@@ -1,25 +1,25 @@
 import * as socketIO from 'socket.io';
 import { getMongoRepository } from 'typeorm';
 
-import Egauge from '../../entities/egauge';
+import HouseState from '../../entities/houseState';
 
-interface IEgauge {
+interface IHouseState {
   dataid?: string;
   createdAt?: string;
   house?: any;
 }
 
 interface IArgs {
-  egauges: IEgauge[];
+  houseStates: IHouseState[];
   dataid: string;
   filter?: {
     createdAt_gte: string;
   };
 }
 
-export const egaugeResolver = {
+export const houseStateResolver = {
   Query: {
-    async getEgauges(_: any, args: IArgs) {
+    async getHouseStates(_: any, args: IArgs) {
       const aggregateOptions = [];
       aggregateOptions.push({
         $match: { dataid: args.dataid },
@@ -31,19 +31,19 @@ export const egaugeResolver = {
         });
       }
 
-      const egauges = await getMongoRepository(Egauge)
+      const houseStates = await getMongoRepository(HouseState)
         .aggregate(aggregateOptions)
         .toArray();
 
-      return egauges;
+      return houseStates;
     },
   },
   Mutation: {
-    async createEgauges(_: any, args: IArgs, { io }: { io: socketIO.Socket }) {
-      const repository = getMongoRepository(Egauge);
+    async createHouseStates(_: any, args: IArgs, { io }: { io: socketIO.Server }) {
+      const repository = getMongoRepository(HouseState);
       const rep = await repository
-        .insertMany(args.egauges);
-      io.emit('egaugeAdded', rep.ops);
+        .insertMany(args.houseStates);
+      io.emit('houseStateAdded', rep.ops);
       return rep.ops;
     },
   },

@@ -1,13 +1,13 @@
-import { egaugeResolver } from './resolvers/egauge';
+import { houseStateResolver } from './resolvers/houseState';
 import { houseResolver } from './resolvers/house';
 
 const resolvers = {
   Query: {
-    ...egaugeResolver.Query,
+    ...houseStateResolver.Query,
     ...houseResolver.Query,
   },
   Mutation: {
-    ...egaugeResolver.Mutation,
+    ...houseStateResolver.Mutation,
     ...houseResolver.Mutation,
   },
   ...houseResolver.Others,

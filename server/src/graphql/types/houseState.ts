@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-koa';
 
-const Egauge = gql`
-  type Egauge {
+const HouseState = gql`
+  type HouseState {
     id: ID
     dataid: String!
     powerUsage: Float!
@@ -10,7 +10,7 @@ const Egauge = gql`
     createdAt: String!
   }
 
-  input NewEgauge {
+  input NewHouseState {
     dataid: String!
     powerUsage: Float!
     waterUsage: Float!
@@ -19,4 +19,4 @@ const Egauge = gql`
   }
 `;
 
-export default Egauge;
+export default HouseState;

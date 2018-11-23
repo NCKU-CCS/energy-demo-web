@@ -7,12 +7,9 @@ import {
 } from 'typeorm';
 
 @Entity()
-export default class Egauge {
+export default class HouseState {
   @ObjectIdColumn()
   public id: string;
-
-  @CreateDateColumn()
-  public createdAt: Date;
 
   @Column()
   public dataid: string;
@@ -25,4 +22,10 @@ export default class Egauge {
 
   @Column('double')
   public gasUsage: number;
+
+  @Column()
+  public isAtHome: boolean;
+
+  @CreateDateColumn()
+  public createdAt: Date;
 }

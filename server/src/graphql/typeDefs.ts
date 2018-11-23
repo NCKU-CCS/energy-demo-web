@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-koa';
-import Egauge from './types/egauge';
+import HouseState from './types/houseState';
 import House from './types/house';
 
 const typeDefs = gql`
@@ -8,10 +8,10 @@ const typeDefs = gql`
   }
 
   type Query {
-    getEgauges(
+    getHouseStates(
       dataid: String!
       filter: Filter
-    ): [Egauge]
+    ): [HouseState]
 
     Houses(
       filter: Filter
@@ -19,9 +19,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createEgauges(
-      egauges: [NewEgauge]!
-    ): [Egauge]
+    createHouseStates(
+      houseStates: [NewHouseState]!
+    ): [HouseState]
 
     createHouse(
       house: NewHouse!
@@ -29,4 +29,4 @@ const typeDefs = gql`
   }
 `;
 
-export default [typeDefs, Egauge, House];
+export default [typeDefs, HouseState, House];
