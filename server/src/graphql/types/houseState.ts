@@ -7,6 +7,7 @@ const HouseState = gql`
     powerUsage: Float!
     waterUsage: Float!
     gasUsage: Float!
+    isAtHome: Boolean!
     createdAt: String!
   }
 
@@ -15,6 +16,7 @@ const HouseState = gql`
     powerUsage: Float!
     waterUsage: Float!
     gasUsage: Float!
+    isAtHome: Boolean!
     createdAt: String!
   }
 `;

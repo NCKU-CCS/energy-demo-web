@@ -6,7 +6,7 @@ const House = gql`
     houseID: String!
     lat: Float!
     lng: Float!
-    houseState: [HouseState]
+    houseStates: [HouseState]
     reducedHouseState: HouseState
   }
 
