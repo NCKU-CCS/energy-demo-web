@@ -7,11 +7,11 @@ import 'reflect-metadata';
 
 import createConfig from './config';
 import * as db from './db';
-import { routers } from './routers';
+import createRouters from './routers';
 
 import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
-import { createEgaugeDataLoader } from './dataloader';
+import { createHouseStateDataLoader } from './dataloader';
 
 export const createApp = async (): Promise<http.Server> => {
   const config = createConfig();
@@ -19,6 +19,13 @@ export const createApp = async (): Promise<http.Server> => {
   await db.connect(config.db);
 
   const app = new Koa();
+  // Socket
+  const server = http.createServer(app.callback());
+  const io = socketIO(server);
+  io.on('connection', () => {
+    // tslint:disable-next-line:no-console
+    console.log('Socket connected.');
+  });
 
   // Error handling
   app.use(async (ctx, next) => {
@@ -35,16 +42,12 @@ export const createApp = async (): Promise<http.Server> => {
       ctx.body = {code: errorCode, message: err.message};
     }
   });
-  app.use(bodyParser());
-  app.use(routers.routes());
-
-  // Socket
-  const server = http.createServer(app.callback());
-  const io = socketIO(server);
-  io.on('connection', () => {
-    // tslint:disable-next-line:no-console
-    console.log('Socket connected.');
+  app.use(async (ctx, next) => {
+    this.io = io;
+    await next();
   });
+  app.use(bodyParser());
+  app.use(createRouters(io));
 
   // Apollo Server
   const apolloServer = new ApolloServer({
@@ -52,7 +55,7 @@ export const createApp = async (): Promise<http.Server> => {
     resolvers,
     context: ({ ctx }: any) => ({
       io,
-      egaugeDataLoader: createEgaugeDataLoader(ctx.request.body.variables),
+      houseStateDataLoader: createHouseStateDataLoader(ctx.request.body.variables),
     }),
   });
   apolloServer.applyMiddleware({ app });
