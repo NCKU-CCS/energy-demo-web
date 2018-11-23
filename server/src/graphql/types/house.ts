@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-koa';
 const House = gql`
   type House {
     id: ID
-    dataid: String!
+    houseID: String!
     lat: Float!
     lng: Float!
     houseState: [HouseState]
@@ -11,7 +11,7 @@ const House = gql`
   }
 
   input NewHouse {
-    dataid: String!
+    houseID: String!
     lat: Float!
     lng: Float!
   }

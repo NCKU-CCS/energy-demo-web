@@ -12,7 +12,7 @@ export default class HouseState {
   public id: string;
 
   @Column()
-  public dataid: string;
+  public houseID: string;
 
   @Column('double')
   public powerUsage: number;

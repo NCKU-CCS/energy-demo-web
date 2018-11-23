@@ -5,7 +5,7 @@ import HouseState from '../../entities/houseState';
 import House from '../../entities/house';
 interface IArgs {
   house: {
-    dataid: string;
+    houseID: string;
     lat: number;
     lng: number;
   };
@@ -34,9 +34,9 @@ export const houseResolver = {
       async reducedHouseState(parent: any, args: IArgs, { houseStateDataLoader }: {
         houseStateDataLoader: DataLoader<string, HouseState>,
       }) {
-        const reducerHouseState = await houseStateDataLoader.load(parent.dataid);
+        const reducerHouseState = await houseStateDataLoader.load(parent.houseID);
         if (reducerHouseState) {
-          reducerHouseState.dataid = parent.dataid;
+          reducerHouseState.houseID = parent.houseID;
           return reducerHouseState;
         }
         return {};

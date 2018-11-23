@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-koa';
 import HouseState from './types/houseState';
 import House from './types/house';
+import BuildingState from './types/buildingState';
 
 const typeDefs = gql`
   input Filter {
@@ -9,13 +10,18 @@ const typeDefs = gql`
 
   type Query {
     getHouseStates(
-      dataid: String!
+      houseID: String!
       filter: Filter
     ): [HouseState]
 
     Houses(
       filter: Filter
     ): [House]
+
+    getBuildingStates(
+      buildingID: String!
+      filter: Filter
+    ): [BuildingState]
   }
 
   type Mutation {
@@ -26,7 +32,11 @@ const typeDefs = gql`
     createHouse(
       house: NewHouse!
     ): House
+
+    createBuildingStates(
+      buildingStates: [NewBuildingState]!
+    ): [BuildingState]
   }
 `;
 
-export default [typeDefs, HouseState, House];
+export default [typeDefs, HouseState, House, BuildingState];

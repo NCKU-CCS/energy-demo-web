@@ -4,14 +4,14 @@ import { getMongoRepository } from 'typeorm';
 import HouseState from '../../entities/houseState';
 
 interface IHouseState {
-  dataid?: string;
+  houseID?: string;
   createdAt?: string;
   house?: any;
 }
 
 interface IArgs {
   houseStates: IHouseState[];
-  dataid: string;
+  houseID: string;
   filter?: {
     createdAt_gte: string;
   };
@@ -22,7 +22,7 @@ export const houseStateResolver = {
     async getHouseStates(_: any, args: IArgs) {
       const aggregateOptions = [];
       aggregateOptions.push({
-        $match: { dataid: args.dataid },
+        $match: { houseID: args.houseID },
       });
 
       if (args.filter) {

@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-koa';
 const HouseState = gql`
   type HouseState {
     id: ID
-    dataid: String!
+    houseID: String!
     powerUsage: Float!
     waterUsage: Float!
     gasUsage: Float!
@@ -11,7 +11,7 @@ const HouseState = gql`
   }
 
   input NewHouseState {
-    dataid: String!
+    houseID: String!
     powerUsage: Float!
     waterUsage: Float!
     gasUsage: Float!

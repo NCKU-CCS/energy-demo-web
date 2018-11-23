@@ -12,7 +12,7 @@ export default class House {
   public id: string;
 
   @PrimaryColumn()
-  public dataid: string;
+  public houseID: string;
 
   @Column('double')
   public lat: number;

@@ -10,11 +10,11 @@ const getHouseStateBydataIds = async (dataIds: string[], filter: IFilter) => {
   const repository = getMongoRepository(HouseState);
   const houseState = await repository
     .aggregate([
-      { $match: { dataid: { $in: dataIds } } },
+      { $match: { houseID: { $in: dataIds } } },
       { $match: { createdAt: { $gte: filter.createdAt_gte  } }},
     ])
     .group({
-      _id: '$dataid',
+      _id: '$houseID',
       powerUsage: { $sum: '$powerUsage' },
       waterUsage: { $sum: '$waterUsage' },
       gasUsage: { $sum: '$gasUsage' },
