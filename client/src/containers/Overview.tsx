@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import memoize from "memoize-one";
+import memoize from 'memoize-one';
 import {
   Card,
   Row,
   Col,
   Select,
   Spin,
+  Form,
 } from 'antd';
 
 import LineChart from '../components/LineChart';
@@ -15,74 +16,77 @@ import Gauge from '../components/Gauge';
 import Calendarhorizontal from '../components/Calendarhorizontal';
 import utils from '../utils';
 
+const FormItem = Form.Item;
 const Option = Select.Option;
 
-interface IEgauge {
-  dataid: string;
+const houseIDList = ['TS_1_1_1', 'TS_1_1_10', 'TS_1_1_11', 'TS_1_1_12', 'TS_1_1_13', 'TS_1_1_14', 'TS_1_1_15', 'TS_1_1_16', 'TS_1_1_2', 'TS_1_1_3', 'TS_1_1_4', 'TS_1_1_5', 'TS_1_1_6', 'TS_1_1_7', 'TS_1_1_8', 'TS_1_1_9', 'TS_1_2_1', 'TS_1_2_2', 'TS_1_2_3', 'TS_1_2_4', 'TS_1_2_5', 'TS_1_2_6', 'TS_1_2_7', 'TS_1_2_8', 'TS_1_3_1', 'TS_1_3_10', 'TS_1_3_11', 'TS_1_3_12', 'TS_1_3_13', 'TS_1_3_14', 'TS_1_3_15', 'TS_1_3_16', 'TS_1_3_17', 'TS_1_3_18', 'TS_1_3_2', 'TS_1_3_3', 'TS_1_3_4', 'TS_1_3_5', 'TS_1_3_6', 'TS_1_3_7', 'TS_1_3_8', 'TS_1_3_9', 'TS_1_4_1', 'TS_1_4_2', 'TS_1_4_3', 'TS_1_4_4', 'TS_1_4_5', 'TS_1_4_6', 'TS_1_4_7', 'TS_1_4_8', 'TS_1_5_1', 'TS_1_5_2', 'TS_1_5_3', 'TS_1_5_4', 'TS_1_6_1', 'TS_1_6_2', 'TS_1_6_3', 'TS_1_6_4', 'TS_1_6_5', 'TS_1_6_6', 'TS_1_6_7', 'TS_1_6_8', 'TS_1_6_9', 'TS_1_7_1', 'TS_1_7_10', 'TS_1_7_2', 'TS_1_7_3', 'TS_1_7_4', 'TS_1_7_5', 'TS_1_7_6', 'TS_1_7_7', 'TS_1_7_8', 'TS_1_7_9', 'TS_1_8_1', 'TS_1_8_2', 'TS_1_8_3', 'TS_1_9_1', 'TS_1_9_2', 'TS_1_9_3', 'TS_1_9_4']
+
+interface IHouseState {
+  houseID: string;
   powerUsage: number;
   waterUsage: number;
   gasUsage: number;
 }
 
-
 interface IProps {
   socket: SocketIOClient.Socket;
-  egauges: IEgauge[];
-  gaugeData: {
-    powerUsage: number;
-    waterUsage: number;
-    gasUsage: number;
-  };
+  houseStates: IHouseState[];
   loading: boolean;
-  refetch: (variables?: { dataid: string }) => Promise<any>;
+  refetch: (variables?: { houseID: string }) => Promise<any>;
 }
 
 interface IState {
-  dataid: string;
-  egaugesFromSocket: IEgauge[];
+  houseID: string;
+  houseStatesFromSocket: IHouseState[];
 }
 
 class Overview extends React.Component<IProps> {
   state: IState = {
-    dataid: '0',
-    egaugesFromSocket: [],
+    houseID: 'TS_1_1_1',
+    houseStatesFromSocket: [],
   };
 
+  filter = memoize(
+    (houseStatesFromSocket: IHouseState[]) => (
+      houseStatesFromSocket.filter(e => e.houseID === this.state.houseID)
+    )
+  );
+
   combine =  memoize(
-    (egauges: IEgauge[], egaugesFromSocket: IEgauge[]) => egauges.concat(
-      egaugesFromSocket.filter((e: any) => e.dataid === this.state.dataid, 
-    ))
+    (houseStates: IHouseState[], filteredHouseStatesFromSocket: IHouseState[]) => (
+      houseStates.concat(filteredHouseStatesFromSocket)
+    )
   );
 
   sum = memoize(
-    (gaugeData: any, egaugesFromSocket: IEgauge[]) => utils.sumGaugeData(
-      egaugesFromSocket
-        .filter(e => e.dataid === this.state.dataid)
-        .concat([gaugeData])
+    (houseStates: IHouseState[], filteredHouseStatesFromSocket: IHouseState[]) => (
+      utils.sumGaugeData(
+        filteredHouseStatesFromSocket.concat(houseStates)
+      )
     )
   );
 
   componentDidMount() {
-    this.props.socket.on('egaugeAdded', this.handleNewData);
+    this.props.socket.on('houseStateAdded', this.handleNewData);
   }
 
   componentWillUnmount() {
-    this.props.socket.off('egaugeAdded', this.handleNewData);
+    this.props.socket.off('houseStateAdded', this.handleNewData);
   }
 
-  handleNewData = (egaugesFromSocket: IEgauge[]) => {
+  handleNewData = (houseStatesFromSocket: IHouseState[]) => {
     this.setState((state: IState) => ({
-      egaugesFromSocket: state.egaugesFromSocket.concat(egaugesFromSocket),
+      houseStatesFromSocket: state.houseStatesFromSocket.concat(houseStatesFromSocket),
     }));  
   }
 
-  handleChange = (dataid: string) => {
+  handleChange = (houseID: string) => {
     this.setState({
-      dataid,
-      egaugesFromSocket: [],
+      houseID,
+      houseStatesFromSocket: [],
     });
     this.props.refetch({
-      dataid,
+      houseID,
     });
   }
 
@@ -90,24 +94,28 @@ class Overview extends React.Component<IProps> {
     if (this.props.loading) {
       return (<Spin />);  
     }
-    const allEgauges = this.combine(this.props.egauges, this.state.egaugesFromSocket);
-    const sumGaugeData = this.sum(this.props.gaugeData, this.state.egaugesFromSocket);
-    console.log(this.state.egaugesFromSocket, sumGaugeData);
+    const filteredHouseStatesFromSocket = this.filter(this.state.houseStatesFromSocket);
+    const allHouseStates = this.combine(this.props.houseStates, filteredHouseStatesFromSocket);
+    const sumGaugeData = this.sum(this.props.houseStates, filteredHouseStatesFromSocket);
     return (
       <React.Fragment>
-        <Select
-          showSearch
-          style={styles.select}
-          placeholder="Select or Search a House ID"
-          value={this.state.dataid}
-          onChange={this.handleChange}
+        <FormItem
+          label="House ID"
         >
-          {/* FIX: Change to real house id */}
-          { Array(800).fill(0).map((_, index) => (
-              <Option key={`${index}`} value={`${index}`}>{index}</Option>
-            ))
-          }
-        </Select>
+          <Select
+            showSearch
+            style={styles.select}
+            placeholder="Select or Search a House ID"
+            value={this.state.houseID}
+            onChange={this.handleChange}
+          >
+            {/* FIX: Change to real house id */}
+            { houseIDList.map((id) => (
+                <Option key={`${id}`} value={`${id}`}>{id}</Option>
+              ))
+            }
+          </Select>
+        </FormItem>
         <Row gutter={16}>
           <Col md={8} xs={24}>
             <Card title="Energy Usuage">
@@ -127,7 +135,7 @@ class Overview extends React.Component<IProps> {
         </Row>
         <Row>
           <LineChart
-            data={allEgauges}
+            data={allHouseStates}
             yFields={['powerUsage', 'waterUsage', 'gasUsage']}
             xField="createdAt"
           />
@@ -149,9 +157,9 @@ const styles = {
 };
 
 const query = gql`
-query getEgauges($dataid: String! $filter: Filter){
-  egauges: getEgauges(
-    dataid: $dataid
+query getHouseStates($houseID: String! $filter: Filter){
+  houseStates: getHouseStates(
+    houseID: $houseID
     filter: $filter
   ) {
     powerUsage,
@@ -163,15 +171,14 @@ query getEgauges($dataid: String! $filter: Filter){
 `;
 
 export default graphql(query, {
-  props: ({ data: { loading, egauges, refetch } }: any) => ({
+  props: ({ data: { loading, houseStates, refetch } }: any) => ({
     loading,
     refetch,
-    egauges,
-    gaugeData: loading ? {} : utils.sumGaugeData(egauges),
+    houseStates,
   }),
   options: (props) => ({
     variables: {
-      dataid: '0',
+      houseID: 'TS_1_1_1',
       filter: {
         // FIX: use today
         createdAt_gte: '2015/1/30',
