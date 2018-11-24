@@ -56,8 +56,8 @@ const Calendarhorizontal = () => {
           offset: 12,
           textStyle: {
             fontSize: 12,
-            fill: "#666",
-            textBaseline: "top"
+            fill:'#666',
+            textBaseline:'top'
           },
           formatter: (val) => (calendar.weekToMonth[val])
         }}
@@ -71,7 +71,7 @@ const Calendarhorizontal = () => {
         type="polygon"
         position="week*day*date"
         shape="boundary-polygon"
-        color={["value", "#BAE7FF-#1890FF-#0050B3"]}
+        color={['value','#BAE7FF-#1890FF-#0050B3']}
       />
       <Coord reflect="y" />
     </Chart>
@@ -79,12 +79,12 @@ const Calendarhorizontal = () => {
 }
 
 // @ts-ignore
-Shape.registerShape("polygon", "boundary-polygon", {
+Shape.registerShape('polygon','boundary-polygon', {
   // @ts-ignore
   draw(cfg, container) {
     if (!Util.isEmpty(cfg.points)) {
       const attrs = {
-        stroke: "#fff",
+        stroke:'#fff',
         lineWidth: 1,
         fill: cfg.color,
         fillOpacity: cfg.opacity
@@ -99,28 +99,28 @@ Shape.registerShape("polygon", "boundary-polygon", {
       ];
       // @ts-ignore
       attrs.path = this.parsePath(path);
-      const polygon = container.addShape("path", {
+      const polygon = container.addShape('path', {
         attrs
       });
 
       if (cfg.origin._origin.lastWeek) {
         const linePath = [
-          ["M", points[2].x, points[2].y],
-          ["L", points[3].x, points[3].y]
+          ['M', points[2].x, points[2].y],
+          ['L', points[3].x, points[3].y]
         ];
 
-        container.addShape("path", {
+        container.addShape('path', {
           zIndex: 1,
           attrs: {
             // @ts-ignore
             path: this.parsePath(linePath),
             lineWidth: 1,
-            stroke: "#404040"
+            stroke:'#404040'
           }
         });
 
         if (cfg.origin._origin.lastDay) {
-          container.addShape("path", {
+          container.addShape('path', {
             zIndex: 1,
             attrs: {
               // @ts-ignore
@@ -129,7 +129,7 @@ Shape.registerShape("polygon", "boundary-polygon", {
                 ["L", points[2].x, points[2].y]
               ]),
               lineWidth: 1,
-              stroke: "#404040"
+              stroke:'#404040'
             }
           });
         }
