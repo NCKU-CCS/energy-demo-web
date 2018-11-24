@@ -12,15 +12,18 @@ interface IArgs {
 
 export const buildingStateResolver = {
   Query: {
-    async getBuildingStates(_: any, args: IArgs) {
+    async getBuildingStates(_: any, { buildingID, filter }: IArgs) {
       const aggregateOptions = [];
-      aggregateOptions.push({
-        $match: { buildingID: args.buildingID },
-      });
 
-      if (args.filter) {
+      if (buildingID) {
         aggregateOptions.push({
-          $match: { createdAt: { $gte: args.filter.createdAt_gte  } },
+          $match: { buildingID },
+        });
+      }
+
+      if (filter) {
+        aggregateOptions.push({
+          $match: { createdAt: { $gte: filter.createdAt_gte  } },
         });
       }
 

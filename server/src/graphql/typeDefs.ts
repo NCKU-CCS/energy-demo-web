@@ -10,7 +10,7 @@ const typeDefs = gql`
 
   type Query {
     getHouseStates(
-      houseID: String!
+      houseID: String
       filter: Filter
     ): [HouseState]
 
@@ -19,7 +19,7 @@ const typeDefs = gql`
     ): [House]
 
     getBuildingStates(
-      buildingID: String!
+      buildingID: String
       filter: Filter
     ): [BuildingState]
   }

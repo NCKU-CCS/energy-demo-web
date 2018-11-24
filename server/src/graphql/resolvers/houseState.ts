@@ -19,15 +19,18 @@ interface IArgs {
 
 export const houseStateResolver = {
   Query: {
-    async getHouseStates(_: any, args: IArgs) {
+    async getHouseStates(_: any, { houseID, filter }: IArgs) {
       const aggregateOptions = [];
-      aggregateOptions.push({
-        $match: { houseID: args.houseID },
-      });
 
-      if (args.filter) {
+      if (houseID) {
         aggregateOptions.push({
-          $match: { createdAt: { $gte: args.filter.createdAt_gte  } },
+          $match: { houseID },
+        });
+      }
+
+      if (filter) {
+        aggregateOptions.push({
+          $match: { createdAt: { $gte: filter.createdAt_gte  } },
         });
       }
 
