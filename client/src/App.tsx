@@ -35,7 +35,10 @@ class App extends React.Component {
                   render={(props) => <Overview {...props} socket={socket} />}
                 />
                 <Route path="/map/" component={Map} />
-                <Route path="/map3d/" component={Map3D} />
+                <Route path="/map3d/" 
+                  // @ts-ignore: HOC socket prop not work
+                  render={(props) => <Map3D {...props} socket={socket} />}
+                />
                 <Route path="/heatmap/" component={HeatMap} />
               </Content>
             </Layout>
@@ -55,6 +58,7 @@ const styles = {
     padding: '0 20px',
     minHeight: 280,
     overflow: 'initial',
+    position: 'relative' as 'relative',
   },
 }
 
