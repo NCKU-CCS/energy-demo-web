@@ -42,7 +42,7 @@ class Map extends React.Component {
 const query = gql`
 {
   Houses {
-    dataid,
+    houseID,
     lat,
     lng
   }

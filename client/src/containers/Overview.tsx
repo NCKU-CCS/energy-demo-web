@@ -15,11 +15,10 @@ import LineChart from '../components/LineChart';
 import Gauge from '../components/Gauge';
 import Calendarhorizontal from '../components/Calendarhorizontal';
 import utils from '../utils';
+import { HOUSE_ID_LIST } from '../constants';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-
-const houseIDList = ['TS_1_1_1', 'TS_1_1_10', 'TS_1_1_11', 'TS_1_1_12', 'TS_1_1_13', 'TS_1_1_14', 'TS_1_1_15', 'TS_1_1_16', 'TS_1_1_2', 'TS_1_1_3', 'TS_1_1_4', 'TS_1_1_5', 'TS_1_1_6', 'TS_1_1_7', 'TS_1_1_8', 'TS_1_1_9', 'TS_1_2_1', 'TS_1_2_2', 'TS_1_2_3', 'TS_1_2_4', 'TS_1_2_5', 'TS_1_2_6', 'TS_1_2_7', 'TS_1_2_8', 'TS_1_3_1', 'TS_1_3_10', 'TS_1_3_11', 'TS_1_3_12', 'TS_1_3_13', 'TS_1_3_14', 'TS_1_3_15', 'TS_1_3_16', 'TS_1_3_17', 'TS_1_3_18', 'TS_1_3_2', 'TS_1_3_3', 'TS_1_3_4', 'TS_1_3_5', 'TS_1_3_6', 'TS_1_3_7', 'TS_1_3_8', 'TS_1_3_9', 'TS_1_4_1', 'TS_1_4_2', 'TS_1_4_3', 'TS_1_4_4', 'TS_1_4_5', 'TS_1_4_6', 'TS_1_4_7', 'TS_1_4_8', 'TS_1_5_1', 'TS_1_5_2', 'TS_1_5_3', 'TS_1_5_4', 'TS_1_6_1', 'TS_1_6_2', 'TS_1_6_3', 'TS_1_6_4', 'TS_1_6_5', 'TS_1_6_6', 'TS_1_6_7', 'TS_1_6_8', 'TS_1_6_9', 'TS_1_7_1', 'TS_1_7_10', 'TS_1_7_2', 'TS_1_7_3', 'TS_1_7_4', 'TS_1_7_5', 'TS_1_7_6', 'TS_1_7_7', 'TS_1_7_8', 'TS_1_7_9', 'TS_1_8_1', 'TS_1_8_2', 'TS_1_8_3', 'TS_1_9_1', 'TS_1_9_2', 'TS_1_9_3', 'TS_1_9_4']
 
 interface IHouseState {
   houseID: string;
@@ -109,8 +108,7 @@ class Overview extends React.Component<IProps> {
             value={this.state.houseID}
             onChange={this.handleChange}
           >
-            {/* FIX: Change to real house id */}
-            { houseIDList.map((id) => (
+            { HOUSE_ID_LIST.map((id) => (
                 <Option key={`${id}`} value={`${id}`}>{id}</Option>
               ))
             }

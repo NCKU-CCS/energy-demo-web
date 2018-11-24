@@ -28,7 +28,7 @@ class Heatmap extends React.Component {
                 <HeatmapOverlay
                   {...viewport}
                   locations={data.houses || []}
-                  intensityAccessor={(house: any) => house.reducedEgauge ? house.reducedEgauge.powerUsage : 0} 
+                  intensityAccessor={(house: any) => house.reducedHouseState ? house.reducedHouseState.powerUsage : 0} 
                   lngLatAccessor={(house: any) => [house.lng, house.lat ]}
                 />
                 )}
@@ -45,10 +45,10 @@ class Heatmap extends React.Component {
 const query = gql`
 query getHouses($filter: Filter) {
   houses: Houses(filter: $filter) {
-    dataid,
+    houseID,
     lat,
     lng,
-    reducedEgauge {
+    reducedHouseState {
       powerUsage
     }
   }
