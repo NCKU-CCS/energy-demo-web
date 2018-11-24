@@ -24,22 +24,22 @@ const Sidebar = (props: IProps) => {
         defaultSelectedKeys={['1']}
         selectedKeys={[props.location.pathname]}
       >
-        <Menu.Item key="/map3d">
-          <Icon type="home" />
-          <Link to="/map3d">Map3D</Link>
-        </Menu.Item>
         <Menu.Item key="/">
-          <Icon type="dashboard" />
-          <Link to="/">Overview</Link>
+          <Icon type="home" />
+          <Link to="/">Map3D</Link>
         </Menu.Item>
-        {/* <Menu.Item key="/heatmap">
+        <Menu.Item key="/dashboard">
+          <Icon type="dashboard" />
+          <Link to="/dashboard">Overview</Link>
+        </Menu.Item>
+        <Menu.Item key="/heatmap">
           <Icon type="heat-map" />  
           <Link to="heatmap">Heatmap</Link>
         </Menu.Item>
         <Menu.Item key="/map">
           <Icon type="environment" />
           <Link to="/map">Map</Link>
-        </Menu.Item> */}
+        </Menu.Item>
       </Menu>
     </Sider>
   );

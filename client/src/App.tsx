@@ -31,14 +31,14 @@ class App extends React.Component {
                 <Route
                   exact
                   path="/"
-                  // @ts-ignore: HOC socket prop not work
-                  render={(props) => <Overview {...props} socket={socket} />}
-                />
-                <Route path="/map/" component={Map} />
-                <Route path="/map3d/" 
-                  // @ts-ignore: HOC socket prop not work
                   render={(props) => <Map3D {...props} socket={socket} />}
                 />
+                <Route
+                  exact
+                  path="/dashboard"
+                  render={(props) => <Overview {...props} socket={socket} />}
+                />  
+                <Route path="/map/" component={Map} />
                 <Route path="/heatmap/" component={HeatMap} />
               </Content>
             </Layout>

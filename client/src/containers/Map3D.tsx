@@ -60,7 +60,7 @@ interface IProps {
 class Map3D extends React.Component<IProps> {
   state = {
     viewState: {
-      latitude: 22.927127,
+      latitude: 22.924127,
       longitude: 120.286390,    
       zoom: 15,
       maxZoom: 18,

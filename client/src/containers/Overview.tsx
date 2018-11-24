@@ -168,7 +168,8 @@ query getHouseStates($houseID: String! $filter: Filter){
 }
 `;
 
-export default graphql(query, {
+export default graphql<{ socket: SocketIOClient.Socket }, {}, {}, {}>(
+  query, {
   props: ({ data: { loading, houseStates, refetch } }: any) => ({
     loading,
     refetch,
