@@ -20,8 +20,8 @@ const DATA_URL = {
 
 const COLORS = {
   red: [255, 77, 79],
-  yellow: [250, 219, 20],
-  green: [186, 230, 55],
+  yellow: [255, 193, 7],
+  green: [76, 175, 80],
   gray: [191, 191, 191],
 }
 
